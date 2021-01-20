@@ -5,3 +5,4 @@ about platform (desktop vs mobile), visitor type, product category.
 The analysis has 2 main parts:
 **1. Analyze whether the A/B test should be rolled out**
 **2. Fit a number of machine learning models to understand what factors in the dataset can best predict conversion rate**
+Data: 
