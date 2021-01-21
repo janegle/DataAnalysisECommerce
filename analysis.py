@@ -1,6 +1,8 @@
 import pickle
 from scipy import stats
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 KPI = ['ATC', 'CVR', 'Clicks', 'SessionRevenue']
 PATH_RESULTS = "./results/"
@@ -133,36 +135,51 @@ def cut_by_feature(df: pd.DataFrame, feature: str, value: str, sign: str):
     return df
 
 
+# Plot graphs of lift or t-stat over time for each KPI
+def plot_graph(df: pd.DataFrame, plot_type: str, kpi: str, output_type: str):
+    df = df.rename(columns={'Feature': 'Date'})
+    df = df[['Date', 'KPI', 'lift', 't-stat']]
+    df = df[df['KPI'] == kpi]
+    sns.lineplot(data=df, x='Date', y=plot_type)
+    if output_type == 'save':
+        plt.savefig(PATH_IMAGES + kpi + '.png')
+    else:
+        plt.show()
+
+
 def main():
-    df = read_data('C:/Users/giangle/Downloads/DataSet.pkl')
-    print("\nThe data is successfully loaded!\n")
-    summarize_data(df)
-    print_count_null(df)
-    # Remove outliers - 11 rows have SessionRevenue == $500,000 and all in variation group
-    df_check1 = df[df['SessionRevenue'] > 100000]
-    print("No of rows where SessionRevenue > $100,000: " + str(df_check1.shape[0]))
-    print("Descriptive Statistics where SessionRevenue > $100,000:\n\n{}\n".format(df_check1.describe()))
-    df_check2 = df[(df['SessionRevenue'] > 10000) & (df['SessionRevenue'] < 100000)]
-    print("No of rows where SessionRevenue is between $10,000 and $100,000: " + str(df_check2.shape[0]))
-    print("Descriptive Statistics where SessionRevenue is between $10,000 and $100,000:\n\n{}\n".format(
-        df_check2.describe()))
-    df = df[df['SessionRevenue'] != 500000]
-    # Check for bad data: is there any session where CVR == 1 but Clicks == 0 or ATC == 0
-    df_check3 = df[(df['CVR'] == 1) & ((df['Clicks'] == 0) | (df['ATC'] == 0))]
-    print("No of rows where CVR is 1 but Clicks is 0 or ATC is 0: " + str(df_check3.shape[0]))
-    # Check randomization
-    check_randomization(df, 'platform')
-    check_randomization(df, 'visitorType')
-    check_randomization(df, 'SessionStartDate')
-    check_randomization(df, 'CategoryID')
-    # Run statistical tests
-    t_test_results(df, 't_test_results_all.csv')
-    t_test_results_cum(df, 't_test_results_all_cumulative.csv')
-    # Run further statistical tests for mobile and desktop
-    df_mobile = df[df['platform'] == 'Mobile Site']
-    t_test_results_cum(df_mobile, 't_test_results_mobile_cumulative.csv')
-    df_desktop = df[df['platform'] == 'Desktop']
-    t_test_results_cum(df_desktop, 't_test_results_desktop_cumulative.csv')
+    # df = read_data('C:/Users/giangle/Downloads/DataSet.pkl')
+    # print("\nThe data is successfully loaded!\n")
+    # summarize_data(df)
+    # print_count_null(df)
+    # # Remove outliers - 11 rows have SessionRevenue == $500,000 and all in variation group
+    # df_check1 = df[df['SessionRevenue'] > 100000]
+    # print("No of rows where SessionRevenue > $100,000: " + str(df_check1.shape[0]))
+    # print("Descriptive Statistics where SessionRevenue > $100,000:\n\n{}\n".format(df_check1.describe()))
+    # df_check2 = df[(df['SessionRevenue'] > 10000) & (df['SessionRevenue'] < 100000)]
+    # print("No of rows where SessionRevenue is between $10,000 and $100,000: " + str(df_check2.shape[0]))
+    # print("Descriptive Statistics where SessionRevenue is between $10,000 and $100,000:\n\n{}\n".format(
+    #     df_check2.describe()))
+    # df = df[df['SessionRevenue'] != 500000]
+    # # Check for bad data: is there any session where CVR == 1 but Clicks == 0 or ATC == 0
+    # df_check3 = df[(df['CVR'] == 1) & ((df['Clicks'] == 0) | (df['ATC'] == 0))]
+    # print("No of rows where CVR is 1 but Clicks is 0 or ATC is 0: " + str(df_check3.shape[0]))
+    # # Check randomization
+    # check_randomization(df, 'platform')
+    # check_randomization(df, 'visitorType')
+    # check_randomization(df, 'SessionStartDate')
+    # check_randomization(df, 'CategoryID')
+    # # Run statistical tests
+    # t_test_results(df, 't_test_results_all.csv')
+    # t_test_results_cum(df, 't_test_results_all_cumulative.csv')
+    # # Run further statistical tests for mobile and desktop
+    # df_mobile = df[df['platform'] == 'Mobile Site']
+    # t_test_results_cum(df_mobile, 't_test_results_mobile_cumulative.csv')
+    # df_desktop = df[df['platform'] == 'Desktop']
+    # t_test_results_cum(df_desktop, 't_test_results_desktop_cumulative.csv')
+    # Plot graph of lift over time for each KPI among mobile users
+    df_t_test_results = pd.read_csv('./results/t_test_results_mobile_cumulative.csv')
+    plot_graph(df_t_test_results, 'lift', 'SessionRevenue', 'save')
 
 
 if __name__ == "__main__":
