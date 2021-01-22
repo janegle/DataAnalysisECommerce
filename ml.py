@@ -24,7 +24,8 @@ FEATURES = ['platform', 'visitorType', 'CategoryID']
 PATH_RESULTS = "./results/"
 PATH_IMAGES = "./images/"
 
-# Simple undersampling of the majority class to ensure balanced data set used for training/validation 
+
+# Simple undersampling of the majority class to ensure balanced data set used for training/validation
 def under_sampling(df: pd.DataFrame, response_col: str):
     df_one = df.loc[df[response_col] == 1]
     df_zero = df.loc[df[response_col] == 0]
@@ -121,8 +122,6 @@ def plot_roc(name, probs, true, output_type):
     plt.legend(loc="lower right")
     if output_type == 'save':
         plt.savefig(PATH_IMAGES + name + '_roc.png')
-    elif output_type == 'show':
-        plt.show()
     else:
         plt.show()
 
@@ -200,7 +199,6 @@ def plot_precision_recall_n(y_true, y_prob, model_name, output_type):
         plt.show()
     else:
         plt.show()
-
 
 
 def define_clfs_params(grid_size):
@@ -282,7 +280,6 @@ def define_clfs_params(grid_size):
         return 0, 0
 
 
-
 def clf_loop(models_to_run, clfs, grid, X_train, X_test, y_train, y_test):
     """Runs the loop using models_to_run, clfs, gridm and the data
     """
@@ -335,9 +332,9 @@ def split_train_test_by_id(data, test_ratio, id_column, hash=hashlib.md5):
 def main():
     df = read_data('C:/Users/giangle/Downloads/DataSet.pkl')
     # Remove outliers
-    df = df[df['SessionRevenue'] != 500000]
+    df = df.loc[df['SessionRevenue'] != 500000]
     # Apply under sampling
-    df = under_sampling(df,'CVR')
+    df = under_sampling(df, 'CVR')
     # Find the best model
     find_best_model(df, 'small', 'CVR', 'ml_results_after_undersampling.csv')
     # Fit the best model, in this case, random forest model
