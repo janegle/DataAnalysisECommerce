@@ -14,6 +14,7 @@ Each row of data represents a session, and includes the following information:
 - CategoryID (product types): categorical (TV Stands, sofas, area rugs, etc.)
 
 ### Part 1: Analyze whether the variation should be rolled out
-![mobile](/images/mobile_ttest.png "T-test results for mobile users")
+<img src="./images/mobile_users_ttest.png" alt="Mobile"
+	title="T-test results for mobile users" width="150" height="100" />
 ### Part 2: Fit a number of machine learning models to understand what factors in the dataset can best predict conversion rate
 
