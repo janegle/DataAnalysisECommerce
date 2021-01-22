@@ -1,5 +1,4 @@
 import hashlib
-from analysis import read_data
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -330,7 +329,7 @@ def split_train_test_by_id(data, test_ratio, id_column, hash=hashlib.md5):
 
 
 def main():
-    df = read_data('C:/Users/giangle/Downloads/DataSet.pkl')
+    df = pd.read_csv('./data/ECommerceDataSet.csv')
     # Remove outliers
     df = df.loc[df['SessionRevenue'] != 500000]
     # Apply under sampling

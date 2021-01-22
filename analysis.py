@@ -10,13 +10,6 @@ PATH_RESULTS = "./results/"
 PATH_IMAGES = "./images/"
 
 
-# Load data from pickle file
-def read_data(filename: str):
-    with open(filename, 'rb') as f:
-        data = pickle.load(f)
-    return data
-
-
 # Summarize the loaded data
 def summarize_data(df: pd.DataFrame):
     row = df.shape[0]
@@ -155,7 +148,7 @@ def plot_graph(df: pd.DataFrame, plot_type: str, kpi: str, output_type: str):
 
 
 def main():
-    df = read_data('C:/Users/giangle/Downloads/DataSet.pkl')
+    df = pd.read_csv('./data/ECommerceDataSet.csv')
     print("\nThe data is successfully loaded!\n")
     summarize_data(df)
     print_count_null(df)
