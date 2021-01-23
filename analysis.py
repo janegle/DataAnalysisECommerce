@@ -134,11 +134,13 @@ def plot_graph(df: pd.DataFrame, plot_type: str, kpi: str, output_type: str):
     df = df.rename(columns={'Feature': 'Date'})
     df = df[['Date', 'KPI', 'lift', 't-stat']]
     df = df.loc[df['KPI'] == kpi]
-    plt.figure(figsize=(15, 8))
+    plt.figure()
     graph = sns.lineplot(data=df, x='Date', y=plot_type)
     if plot_type == 'lift':
         graph.yaxis.set_major_formatter(PercentFormatter(1))
     graph.set_title(kpi + " Trends for Mobile Users")
+    graph.set(xlabel=None)
+    graph.set_ylabel(plot_type, fontsize=12)
     plt.xticks(rotation=15)
 
     if output_type == 'save':
