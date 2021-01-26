@@ -23,10 +23,10 @@ Analyzing results cumulatively:
 - Session revenue’s lift over time and t-stat over time both have U shape, indicating that customers need more time to adjust spending behavior
 - ATC’s lift over time and t-stat over time are not stable
 
-<p float = "left">
+<div style = "display:flex;">
 	<img src="./images/SessionRevenue_lift.png" width = "450"/> 
 	<img src="./images/SessionRevenue_t-stat.png" width = "450"/>
-</p>
+</div>
 
 <p float = "left">
 	<img src="./images/CVR_lift.png" width = "450"/> 
